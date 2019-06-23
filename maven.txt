@@ -1,0 +1,128 @@
+----------------MAVEN NOTES-------------------
+A tool based on the concept of Project Object Model(POM) which can
+manage project build, reporting, and documentation from a central 
+piece of information. 
+All build system performs the same step:
+	1) compile source code
+	2) copy resource
+	3) compile and run tests
+	4) package project
+	5) deploy project
+	6) clean up
+
+POM contains:
+	1) describes a project
+	2) name and version, artifact type, source code locations, dependencies
+	3) plugins
+	4) profiles(alternate build configurations)
+	5) uses XML by default
+Once you install maven and put it in path varibale and also creates M2_HOME
+variable. 
+You can create maven project using the following command.
+>>mvn archetype:generate //archetype are predifined maven project structures
+  When this command finishes, you can type number to choose from OR you
+  can just hit enter to create a simple project. 
+  You can also choose version of archetype. 
+  You will prompt for groupId, artifactTypeId and Version. 
+  GroupId is unique for organization. The convention is to give the website of 
+  organization in reverse order. 
+  ArtifactId is the name of the project.
+  Version with SNAPSHOT means it is development version not release version. 
+  The name of jar file will be artifactId.version.jar
+  It will ask you for package. Project will be created under the package 
+  directory. Inside this directory, it will create scr and test directory. 
+
+Writing pom.xml file: Dependencies
+	<dependencies>
+		<!--google for maven JUnit Dependencies -->
+		<!-- https://mvnrepository.com/ -->
+		<!-- This will add related jar in your build path so that we can use them in your project -->
+		<dependency>
+		  <groupId>junit</groupId>
+		  <artifactId>junit</artifactId>
+		  <version>4.12</version>
+		</dependency>
+	 </dependencies>
+	 
+	 Adding and removing dependencies in pom.xml file automcatically adds order
+	 removed dependencies from our build path. 
+  
+	Packaging:
+		1) First,we need to compile all of the source files to class files.
+		   App.java -> App.class
+		2) Run tests
+		3) Create jars. You can share these jars file with others. 
+	Clean:	mvn clean
+		maven build and give goal as clean and it will run clean. This is same as 
+		running mvn clean on command line. mvn clean deletes the target directory.
+		All the compiled and jar files are saved in target folder. 
+	Compile: mvn compile
+		compiles source files and creates .class files. This will create target folder inside
+		of which there are .class files
+	test-compile: mvn test-compile
+		This will create .class for test classes. 
+	test:	mvn test
+		This will run tests. This will create surfilereports folder inside of which will
+		have the report of current test. 
+	install:  mvn install
+		mvn install will creates jar files as your packaging.
+		
+Maven Build Lifecycle:
+	- validate: in other to validate your code, to make sure everything is right and ready to move on
+	- compile
+	- test
+	- package: package your code in distributive format like jar and war.
+	- integration-test: compile your integration test. 
+	- verify: run any checks to validate the package so that it meets the required criteria
+	- install: install package in local machine
+	- deploy: runs in integration and release environment. copies final package to remote repository
+
+Transitive Dependencies:
+	dependencies of dependencies is called transitive dependencies. 
+	You can check your dependencies tree in your maven tab [in IntelliJ] to see what are transitive
+	dependencies. 
+	
+	Hold Ctrl and click your groupId of your dependency to see its pom.xml file. This way, you will
+	have better idea about the dependencies of your dependencies. 
+	
+	https://stackoverflow.com/questions/32447650/how-to-view-maven-dependency-hierarchy-in-intellij
+	
+	
+Excluding Dependencies:
+	You need to know groupID and artifactId to exclude any dependencies. 
+	For example, if you want to exclude transitive dependecy of hibernate Jboss.
+	You do something like this.
+	<dependecy>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-core</artifactId>
+		<version>5.1.0.Final</version>
+		<exclusions>
+			<exclusion>
+				<groupId>org.jboss.logging</groupId>
+				<artifactId>jboss-logging</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependecy>
+	
+Scope:
+	For example, we don't want to use our junit for scr directory. We want Junit only for testing. So,
+	we can change this scope to be just for test like this.
+	
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.12</version>
+		<scope>test</scope>
+	</dependency>
+	
+	There are other different kinds of test. For exp:
+	<scope>compile</scope> //compile is a default scope. If you don't define any scope, it will be compile scope. 
+	<scope>runtime</scope> //only includes on runtime, for exp antlr dependecy.
+	<scope>provided</scope> //much like compile but it indicates that you except jdk or container to provide the 
+	dependencies on runtime. 
+
+cmder: pronouced commander is better command line tool for windows. 
+	
+	
+	
+	
